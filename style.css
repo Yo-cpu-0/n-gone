@@ -2,6 +2,7 @@
     --build-bg-color: #aeb6c2;
     --card-color: #fafcfd;
     --hover-card-color: #e5e5ed;
+    --ngu-text-color: #80ff8a;
 }
 
 body {
@@ -130,6 +131,10 @@ summary {
     right: 4px;
     z-index: 12;
     transition: opacity 5s ease-in;
+}
+
+.ngu-experiment-text {
+    color: #3345bd;
 }
 
 #training-button {
@@ -1699,7 +1704,7 @@ summary {
     /* box-shadow: 4px 4px 4px hsla(240, 0%, 17%, 0.14); */
 }
 
-.tooltip {}
+/*.tooltip {}*/
 
 .tooltip .tooltiptext {
     visibility: hidden;
