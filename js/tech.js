@@ -11900,7 +11900,6 @@ const tech = {
             m.setFieldRegen();
             setInterval(() => {
                 tech.laserDamage = (5 * m.energy);
-                simulation.inGameConsole(tech.laserDamage + " " + m.energy);
             }, 500);
         },
         remove() {
