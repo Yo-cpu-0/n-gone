@@ -1679,6 +1679,16 @@ const m = {
             }
 
         },
+        cellulize () {
+            m.isAltSkin = true;
+            m.color = {
+                hue: 125,
+                sat: 100,
+                light: 75,
+            }
+            m.fillColor = `hsl(${m.color.hue},${m.color.sat}%,${m.color.light}%)`;
+            m.fillColorDark = `hsl(${m.color.hue},${m.color.sat}%,${m.color.light - 50}%)`;
+        },
         anodize() {
             m.isAltSkin = true
             m.color = {
@@ -2650,6 +2660,8 @@ const m = {
             m.fieldRegen *= 2.5
         } else if (tech.isGroundState) {
             m.fieldRegen *= 0.66
+        } else if (tech.isInertialConfinementFusion) {
+            m.fieldRegen *= 2.5
         }
     },
     regenEnergy() { //used in drawRegenEnergy  // rewritten by some tech

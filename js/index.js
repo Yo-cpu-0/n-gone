@@ -598,6 +598,7 @@ ${simulation.difficultyMode > 4 ? `<details id="constraints-details" style="padd
     <button onclick="build.sortTech('damage taken')" class='sort-button'><strong style="letter-spacing: 1px;font-weight: 100;">dmg taken</strong></button>
     <button onclick="build.sortTech('heal')" class='sort-button'><strong class='color-h'>heal</strong></button>
     <button onclick="build.sortTech('energy')" class='sort-button'><strong class='color-f'>energy</strong></button>
+    <button onclick="build.sortTech('ngu')" class='sort-button'><strong class='ngu-experiment-text'>NGU</strong></button>
     <input type="search" id="sort-input" style="width: 8em;font-size: 0.6em;color:#000;" placeholder="sort by" />
     <button onclick="build.sortTech('input')" class='sort-button' style="border-radius: 0em;border: 1.5px #000 solid;font-size: 0.6em;" value="damage">sort</button>
 </div>`;
@@ -679,6 +680,15 @@ ${simulation.difficultyMode > 4 ? `<details id="constraints-details" style="padd
                 if (!a.isFieldTech && b.isFieldTech) return 1; //sort to the bottom
                 return 0;
             });
+        } else if (find === 'NGU') {
+            tech.tech.sort((a, b) => {
+                if (a.isNGUTech && b.isNGUTech) {
+                return (a.allowed() === b.allowed()) ? 0 : a.allowed() ? -1 : 1;
+            }
+            if (a.isNGUTech && !b.isNGUTech) return -1; //sort to the top
+            if (!a.isNGUTech && b.isNGUTech) return 1; //sort to the bottom
+            return 0;
+        });
         } else if (find === 'allowed') {
             // tech.tech.sort((a, b) => {
             //     if (a.allowed() > !b.allowed()) return -1; //sort to the top
@@ -954,6 +964,7 @@ ${simulation.difficultyMode > 4 ? `<details id="constraints-details" style="padd
         <button onclick="build.sortTech('damage taken', true)" class='sort-button'><strong style="letter-spacing: 1px;font-weight: 100;">dmg taken</strong></button>
         <button onclick="build.sortTech('heal')" class='sort-button'><strong class='color-h'>heal</strong></button>
         <button onclick="build.sortTech('energy')" class='sort-button'><strong class='color-f'>energy</strong></button>
+        <button onclick="build.sortTech('NGU')" class='sort-button'><strong class='ngu-experiment-text'>NGU</strong></button>
         <input type="search" id="sort-input" style="width: 7.5em;font-size: 0.6em;color:#000;" placeholder="sort by" />
         <button onclick="build.sortTech('input', true)" class='sort-button' style="border-radius: 0em;border: 1.5px #000 solid;font-size: 0.6em;" value="damage">sort</button>
     </div>

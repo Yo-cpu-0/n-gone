@@ -11751,6 +11751,162 @@ const tech = {
         },
         remove() { }
     },
+    /* ------------N-GON UPGRADED TECH------------*/
+    /* ---Templates---
+        ---Tech---
+        {
+        name: "",
+        descriptionFunction() {
+            return ``
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "",
+        isNGUTech: true,
+        allowed() {
+        },
+        effect() {
+        },
+        remove() {
+        }
+    },
+        ---descriptionFunction() utils---
+        ${powerUps.orb.research(num)} //display the research orb in descriptionFunction()
+        ${powerUps.orb.heal(num)} //display the heal orb in descriptionFunction()
+        ${powerUps.orb.ammo(num)} //display the ammo orb in descriptionFunction()
+        ${powerUps.orb.coupling(num)} //display the coupling orb in descriptionFunction()
+        ${powerUps.orb.boost(num)} //display the boost/determinism orb in descriptionFunction()
+        ${powerUps.orb.gun(num)} //display the gun orb in descriptionFunction()
+        ${powerUps.orb.field(num)} //display the field orb in descriptionFunction()
+        ${powerUps.orb.tech(num)} //display the tech orb in descriptionFunction()
+        <strong class='color-junk'> //junk tech text color
+        <strong class='color-d'> //red damage tech text color
+        ---effect() utils---
+        simulation.inGameConsole(``); //in-game debug log print function
+        m.addHealth(); //adds health to m, limited to 100 health and also animates the health bar
+        m.health //health value, as a decimal
+        m.coupling //amount of coupling the player has
+        tech.haveGunCheck(""); //checks if the player has a certain gun, used in allowed() => {return} statements
+
+        */
+    {
+        name: "<strong class='ngu-experiment-text'>accelerated mitosis</strong>",
+        descriptionFunction() {
+            return `you passively regenerate <strong class='color-h'>health</strong> at an exponential rate, but ${powerUps.orb.heal(1)} no longer has an effect`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 10,
+        isSkin: true,
+        isNGUTech: true,
+        requires: "not mass-energy equivalence",
+        allowed() {  
+            return !m.isAltSkin && !tech.isEnergyHealth;
+        },
+        effect() {
+            tech.isAcceleratedMitosis = true;
+            m.skin.cellulize();
+            let regenCoef = 0;
+            let couplingAdd = 0;
+            powerUps.heal.color = "#c1c6c9";
+            powerUps.heal.effect = () => {};
+            setInterval(() => {
+                if (tech.isIncubator) {
+                    if (m.health < 0.25) {
+                        regenCoef = 0.025;
+                        /*simulation.inGameConsole(regenCoef);*/
+                    }
+                    if (m.health >= 0.25) {
+                        regenCoef = 0;
+                        /*simulation.inGameConsole(regenCoef);*/
+                    }
+                }
+                if (!tech.isIncubator) {
+                    regenCoef = 0;
+                }
+                if (tech.isRegenCoupling) {
+                    couplingAdd = m.coupling;
+                }
+                if (!tech.isRegenCoupling) {
+                    couplingAdd = 0;
+                }
+                if (tech.isAcceleratedMitosis) {
+                    m.addHealth((m.health / 100) + regenCoef + (couplingAdd / 1500));
+                }
+            }, 500);
+        },
+        remove() {
+            m.resetSkin();
+            tech.isAcceleratedMitosis = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>incubator</strong>",
+        descriptionFunction() {
+            return `if your <strong class='color-h'>health</strong> falls below <strong>25%</strong>, you regenerate faster`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 10,
+        requires: "accelerated mitosis",
+        isNGUTech: true,
+        allowed() {  
+            return tech.isAcceleratedMitosis;
+        },
+        effect() {
+            tech.isIncubator = true;
+        },
+        remove() {
+            tech.isIncubator = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>regenerative coupling</strong>",
+        descriptionFunction() {
+            return `the rate at which you regenerate <strong class='color-h'>health</strong> is also influenced by your ${powerUps.orb.coupling(1)} amount`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "accelerated mitosis",
+        isNGUTech: true,
+        allowed() {
+            return tech.isAcceleratedMitosis;
+        },
+        effect() {
+            tech.isRegenCoupling = true;
+        },
+        remove() {
+            tech.isRegenCoupling = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>inertial confinement fusion</strong>",
+        descriptionFunction() {
+            return `<strong>x2.5</strong> <strong class='color-f'>energy</strong> generation, <strong class='color-laser'>laser </strong> <strong class="color-d">damage</strong> is determined by your <strong class='color-f'>energy</strong> level<br><em style ="float: right;">(x${(m.maxEnergy * 5).toFixed(1)} damage at max energy)`;
+        },
+        maxCount: 1,
+        isGunTech: true,
+        count: 0,
+        frequency: 1,
+        requires: "laser",
+        isNGUTech: true,
+        allowed() {
+            return tech.haveGunCheck("laser");
+        },
+        effect() {
+            tech.isInertialConfinementFusion = true;
+            m.setFieldRegen();
+            setInterval(() => {
+                tech.laserDamage = (5 * m.energy);
+                simulation.inGameConsole(tech.laserDamage + " " + m.energy);
+            }, 500);
+        },
+        remove() {
+            tech.isInertialConfinementFusion = false;
+        }
+    },
     // {
     //     name: "rule 90",
     //     maxCount: 1,
@@ -12234,4 +12390,8 @@ const tech = {
     isWiki: null,
     isStaticBlock: null,
     isDamageFieldTech: null,
+    isAcceleratedMitosis: null,
+    isIncubator: null,
+    isRegenCoupling: null,
+    isInertialConfinementFusion: null,
 }
