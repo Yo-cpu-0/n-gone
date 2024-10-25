@@ -11899,7 +11899,7 @@ const tech = {
             tech.isInertialConfinementFusion = true;
             m.setFieldRegen();
             setInterval(() => {
-                tech.laserDamage = (5 * m.energy);
+                tech.laserDamage = (1 * m.energy);
             }, 500);
         },
         remove() {
