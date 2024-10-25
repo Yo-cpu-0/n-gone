@@ -11884,7 +11884,7 @@ const tech = {
     {
         name: "<strong class='ngu-experiment-text'>inertial confinement fusion</strong>",
         descriptionFunction() {
-            return `<strong>x2.5</strong> <strong class='color-f'>energy</strong> generation, <strong class='color-laser'>laser </strong> <strong class="color-d">damage</strong> is determined by your <strong class='color-f'>energy</strong> level<br><em style ="float: right;">(x${(m.maxEnergy * 5).toFixed(1)} damage at max energy)`;
+            return `<strong>x2.5</strong> <strong class='color-f'>energy</strong> generation, <strong class='color-laser'>laser </strong> <strong class="color-d">damage</strong> is determined by your <strong class='color-f'>energy</strong> level<br><em style ="float: right;">(x${(m.maxEnergy * 2).toFixed(1)} damage at max energy)`;
         },
         maxCount: 1,
         isGunTech: true,
