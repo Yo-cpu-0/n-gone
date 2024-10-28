@@ -11755,7 +11755,7 @@ const tech = {
     /* ---Templates---
         ---Tech---
         {
-        name: "",
+        name: "<strong class='ngu-experiment-text'></strong>",
         descriptionFunction() {
             return ``
         },
@@ -11884,7 +11884,7 @@ const tech = {
     {
         name: "<strong class='ngu-experiment-text'>inertial confinement fusion</strong>",
         descriptionFunction() {
-            return `<strong>x2.5</strong> <strong class='color-f'>energy</strong> generation, <strong class='color-laser'>laser </strong> <strong class="color-d">damage</strong> is determined by your <strong class='color-f'>energy</strong> level<br><em style ="float: right;">(x${(m.maxEnergy * 2).toFixed(1)} damage at max energy)`;
+            return `<strong>x2.5</strong> <strong class='color-f'>energy</strong> generation, <strong class='color-laser'>laser </strong> <strong class="color-d">damage</strong> is determined by your <strong class='color-f'>energy</strong> level<br><em style="float: right;">(x${((m.maxEnergy * 1) + 1.18).toFixed(1)} damage at max energy)</em>`;
         },
         maxCount: 1,
         isGunTech: true,
@@ -11904,6 +11904,29 @@ const tech = {
         },
         remove() {
             tech.isInertialConfinementFusion = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>tritiated medium</strong>",
+        descriptionFunction() {
+            return `<strong>-25%</strong> <strong class='color-laser'>laser</strong> energy efficiency, <strong class='color-laser'>laser</strong> inflicts radioactive damage`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "laser",
+        isGunTech: true,
+        isNGUTech: true,
+        allowed() {
+            return tech.haveGunCheck("laser");
+        },
+        effect() {
+            tech.isTritiatedMedium = true;
+            tech.laserColor = "#14f500";
+            tech.laserDrain *= 1.25;
+        },
+        remove() {
+            tech.isTritiatedMedium = false;
         }
     },
     // {
@@ -12393,4 +12416,5 @@ const tech = {
     isIncubator: null,
     isRegenCoupling: null,
     isInertialConfinementFusion: null,
+    isTritiatedMedium: null,
 }

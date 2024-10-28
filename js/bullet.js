@@ -2310,6 +2310,9 @@ const b = {
                     const force = Vector.mult(Vector.normalise(Vector.sub(path[index], path[Math.max(0, index - 1)])), 0.003 * push * Math.min(6, best.who.mass))
                     Matter.Body.applyForce(best.who, path[index], force)
                 }
+                if (tech.isTritiatedMedium) {
+                    mobs.statusDoT(best.who, 0.15, 300);
+                }
             } else if (tech.isLaserPush && best.who.classType === "body") {
                 const index = path.length - 1
                 Matter.Body.setVelocity(best.who, { x: best.who.velocity.x * 0.97, y: best.who.velocity.y * 0.97 });
