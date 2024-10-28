@@ -11893,7 +11893,7 @@ const tech = {
         requires: "laser",
         isNGUTech: true,
         allowed() {
-            return tech.haveGunCheck("laser");
+            return tech.haveGunCheck("laser") && !tech.isPhotonicResonance;
         },
         effect() {
             tech.isInertialConfinementFusion = true;
@@ -11927,6 +11927,38 @@ const tech = {
         },
         remove() {
             tech.isTritiatedMedium = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>photonic resonance</strong>",
+        descriptionFunction() {
+            return `<strong class='color-laser'>laser</strong> damage increases the longer you fire`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "laser, not inertial confinement fusion",
+        isNGUTech: true,
+        isGunTech: true,
+        allowed() {
+            return tech.haveGunCheck("laser") && !tech.isInertialConfinementFusion;
+        },
+        effect() {
+            tech.isPhotonicResonance = true;
+            let timeMult = 0;
+            setInterval(() => {
+                if (input.fire && tech.isPhotonicResonance) {
+                    tech.laserDamage += 0.02;
+                    timeMult += 1;
+                } else if (!input.fire && tech.isPhotonicResonance) {
+                    tech.laserDamage -= (0.02 * timeMult);
+                    timeMult = 0;
+                }
+                //simulation.inGameConsole(tech.laserDamage);
+            }, 500);
+        },
+        remove() {
+            tech.isPhotonicResonance = false;
         }
     },
     // {
@@ -12417,4 +12449,5 @@ const tech = {
     isRegenCoupling: null,
     isInertialConfinementFusion: null,
     isTritiatedMedium: null,
+    isPhotonicResonance: null,
 }
