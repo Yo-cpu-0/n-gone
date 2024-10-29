@@ -384,10 +384,12 @@ const tech = {
         },
         requires: "not skinned",
         effect() {
+            tech.isNitinol = true;
             m.skin.mech();
             m.setMovement()
         },
         remove() {
+            tech.isNitinol = false;
             if (this.count) m.resetSkin();
         }
     },
@@ -11932,7 +11934,7 @@ const tech = {
     {
         name: "<strong class='ngu-experiment-text'>photonic resonance</strong>",
         descriptionFunction() {
-            return `<strong class='color-laser'>laser</strong> damage increases the longer you fire`
+            return `<strong class='color-laser'>laser</strong> damage and <strong class='color-f'>energy </strong> drain increases the longer you fire`
         },
         maxCount: 1,
         count: 0,
@@ -11949,16 +11951,43 @@ const tech = {
             setInterval(() => {
                 if (input.fire && tech.isPhotonicResonance) {
                     tech.laserDamage += 0.02;
+                    tech.laserDrain += 0.001;
                     timeMult += 1;
                 } else if (!input.fire && tech.isPhotonicResonance) {
                     tech.laserDamage -= (0.02 * timeMult);
+                    tech.laserDrain -= (0.001 * timeMult);
                     timeMult = 0;
                 }
-                //simulation.inGameConsole(tech.laserDamage);
+                //simulation.inGameConsole(tech.laserDrain);
             }, 500);
         },
         remove() {
             tech.isPhotonicResonance = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>prioritized energy</strong>",
+        descriptionFunction() {
+            return `+40% <strong>jumping</strong>, but ${powerUps.orb.heal(1)} has -50% effect`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "not nitinol, accelerated mitosis, mass-energy equivalence",
+        isNGUTech: true,
+        allowed() {
+            return !tech.isEnergyHealth && !tech.isNitinol && !tech.isAcceleratedMitosis;
+        },
+        effect() {
+            tech.isPriorityEnergy = true;
+            //tech.baseFx *= 1.4;
+            tech.baseJumpForce *= 1.6;
+            m.setMovement()
+        },
+        remove() {
+            tech.isPriorityEnergy = false;
+            tech.baseJumpForce /= 1.4;
+            m.setMovement();
         }
     },
     // {
@@ -12450,4 +12479,6 @@ const tech = {
     isInertialConfinementFusion: null,
     isTritiatedMedium: null,
     isPhotonicResonance: null,
+    isNitinol: null,
+    isPriorityEnergy: null,
 }
