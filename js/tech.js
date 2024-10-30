@@ -11812,7 +11812,7 @@ const tech = {
             let regenCoef = 0;
             let couplingAdd = 0;
             powerUps.heal.color = "#c1c6c9";
-            powerUps.heal.effect = () => {};
+            //powerUps.heal.effect = () => {};
             setInterval(() => {
                 if (tech.isIncubator) {
                     if (m.health < 0.25) {
@@ -11981,13 +11981,13 @@ const tech = {
         effect() {
             tech.isPriorityEnergy = true;
             //tech.baseFx *= 1.4;
-            tech.baseJumpForce *= 1.6;
-            m.setMovement()
+            m.jumpForce *= 1.4;
+            //m.setMovement()
         },
         remove() {
             tech.isPriorityEnergy = false;
-            tech.baseJumpForce /= 1.4;
-            m.setMovement();
+            m.jumpForce = tech.baseJumpForce * m.fieldJump * m.squirrelJump * (tech.isFastTime ? 1.13 : 1) / player.mass / player.mass;
+            //m.setMovement();
         }
     },
     // {
