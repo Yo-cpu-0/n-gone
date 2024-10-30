@@ -776,7 +776,7 @@ const powerUps = {
             return Math.sqrt(0.1 + 0.25) * 40 * (simulation.healScale ** 0.25) * Math.sqrt(tech.largerHeals * (tech.isHalfHeals ? 0.5 : 1)); //(simulation.healScale ** 0.25)  gives a smaller radius as heal scale goes down
         },
         effect() {
-            if (!tech.isEnergyHealth && m.alive) {
+            if (!tech.isEnergyHealth && m.alive && !tech.isAcceleratedMitosis) {
                 powerUps.animatePowerUpGrab('rgba(0, 238, 187,0.25)')
                 let heal = (this.size / 40 / (simulation.healScale ** 0.25)) ** 2 //simulation.healScale is undone here because heal scale is already properly affected on m.addHealth()
                 if (heal > 0) {
