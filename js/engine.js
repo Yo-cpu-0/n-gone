@@ -17,7 +17,6 @@ engine.world.gravity.scale = 0; //turn off gravity (it's added back in later)
 // engine.velocityIterations = 100
 // engine.positionIterations = 100
 // engine.enableSleeping = true
-
 // matter events
 function playerOnGroundCheck(event) {
     //runs on collisions events
@@ -112,6 +111,9 @@ function collisionChecks(event) {
                         if (tech.isRewindAvoidDeath && m.energy > 0.85 * Math.min(1, m.maxEnergy) && dmg > 0.01) { //CPT reversal runs in m.damage, but it stops the rest of the collision code here too
                             m.damage(dmg);
                             return
+                        }
+                        if (tech.isElasticCollision) {
+                            mob[k].damage(tech.mobDamage);
                         }
                         m.damage(dmg); //normal damage
 

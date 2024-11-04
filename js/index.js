@@ -1954,7 +1954,6 @@ document.getElementById("updates").addEventListener("toggle", function () {
     }
     let text = `<pre><strong>n-gon</strong>: <a href="https://github.com/landgreen/n-gon/blob/master/todo.txt">todo list</a> and complete <a href="https://github.com/landgreen/n-gon/commits/master">change-log</a><hr>`
     document.getElementById("updates-div").innerHTML = text
-
     ///  https://api.github.com/repos/landgreen/n-gon/stats/commit_activity
     loadJSON('https://api.github.com/repos/landgreen/n-gon/commits',
         function (data) {
@@ -1964,14 +1963,48 @@ document.getElementById("updates").addEventListener("toggle", function () {
                 text += data[i].commit.message
                 if (i < len - 1) text += "<hr>"
             }
-            text += "</pre>"
+            //text += "</pre>"
             document.getElementById("updates-div").innerHTML = text.replace(/\n/g, "<br />")
         },
         function (xhr) {
             console.error(xhr);
         }
     );
-})
+});
+document.getElementById("mod-updates").addEventListener("toggle", function () {
+    function loadJSON(path, success, error) { //generic function to get JSON
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    if (success)
+                        success(JSON.parse(xhr.responseText));
+                } else {
+                    if (error)
+                        error(xhr);
+                }
+            }
+        };
+        xhr.open("GET", path, true);
+        xhr.send();
+    }
+    let modText = `<pre><strong>n-gon</strong>: <a href="https://github.com/landgreen/n-gon/blob/master/todo.txt">todo list</a> and complete <a href="https://github.com/landgreen/n-gon/commits/master">change-log</a><hr>`
+    loadJSON('https://api.github.com/repos/3xiondev/n-gon-upgraded/commits',
+        function (data) {
+            // console.log(data[0].sha) //unique code for most recent commit
+            for (let i = 0, len = 20; i < len; i++) {
+                modText += "<strong>" + data[i].commit.author.date.substr(0, 10) + "</strong> - "; //+ "<br>"
+                modText += data[i].commit.message
+                if (i < len - 1) modText += "<hr>"
+            }
+            modText += "\n <hr> </pre>"
+            document.getElementById("mod-updates-div").innerHTML = modText.replace(/\n/g, "<br />")
+        },
+        function (xhr) {
+            console.error(xhr);
+        }
+    );
+});
 const sound = {
     tone(frequency, end = 1000, gain = 0.05) {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); //setup audio context

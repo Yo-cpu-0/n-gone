@@ -6035,13 +6035,15 @@ const m = {
                                 ) {
                                     mob[k].foundPlayer();
                                     let dmg = Math.min(Math.max(0.025 * Math.sqrt(mob[k].mass), 0.05), 0.3) * simulation.dmgScale; //player damage is capped at 0.3*dmgScale of 1.0
+                                    let dmgMob = 0.05;
                                     if (tech.isRewindAvoidDeath && (m.energy + 0.05) > Math.min(0.95, m.maxEnergy) && dmg > 0.01) { //CPT reversal runs in m.damage, but it stops the rest of the collision code here too
                                         m.damage(dmg);
                                         return
                                     }
                                     m.damage(dmg);
                                     if (tech.isPiezo) m.energy += 20.48 * level.isReducedRegen;
-                                    if (tech.isStimulatedEmission) powerUps.ejectTech()
+                                    if (tech.isStimulatedEmission) powerUps.ejectTech();
+                                    if (tech.isElasticCollision) mob[k].damage(0.05);
                                     if (mob[k].onHit) mob[k].onHit();
                                     if (m.immuneCycle < m.cycle + m.collisionImmuneCycles) m.immuneCycle = m.cycle + m.collisionImmuneCycles; //player is immune to damage for 30 cycles
                                     //extra kick between player and mob              //this section would be better with forces but they don't work...

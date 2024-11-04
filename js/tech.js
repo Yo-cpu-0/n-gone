@@ -11990,6 +11990,49 @@ const tech = {
             //m.setMovement();
         }
     },
+    {
+        name: "<strong class='ngu-experiment-text'>elastic collision</strong>",
+        descriptionFunction() {
+            return `you deal collision <strong class='color-d'>damage</strong> to mobs`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "",
+        isNGUTech: true,
+        allowed() {
+            return true;
+        },
+        effect() {
+            tech.isElasticCollision = true;
+        },
+        remove() {
+            tech.isElasticCollision = false;
+        }
+    },
+    {
+        name: "<strong class='ngu-experiment-text'>microneedles</strong>",
+        descriptionFunction() {
+            return `deal <strong>x2</strong> collision damage to mobs`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "elastic collision",
+        isNGUTech: true,
+        allowed() {
+            return tech.isElasticCollision;
+        },
+        effect() {
+            tech.isMicroneedles = true;
+            tech.mobDamage = 1;
+        },
+        remove() {
+            tech.isMicroneedles = false;
+            tech.mobDamage = 0.5;
+        }
+    },
+    
     // {
     //     name: "rule 90",
     //     maxCount: 1,
@@ -12117,6 +12160,7 @@ const tech = {
     ],
     //variables use for gun tech upgrades
     fireRate: 1, //initializes to 1
+    mobDamage: 0.5,
     bulletSize: null,
     energySiphon: null,
     healSpawn: null,
@@ -12481,4 +12525,6 @@ const tech = {
     isPhotonicResonance: null,
     isNitinol: null,
     isPriorityEnergy: null,
+    isElasticCollision: null,
+    isMicroneedles: null,
 }
