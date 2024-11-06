@@ -12032,7 +12032,6 @@ const tech = {
             tech.mobDamage = 0.5;
         }
     },
-    
     // {
     //     name: "rule 90",
     //     maxCount: 1,

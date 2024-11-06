@@ -33,7 +33,7 @@ const spawn = {
         "pulsar", "pulsar",
         "laser", "laser",
         "laserLayer", "laserLayer",
-        "sneaker", "launcher", "launcherOne", "exploder", "sucker", "sniper", "spinner", "grower", "beamer", "spawner", "ghoster", "focuser"
+        "sneaker", "launcher", "launcherOne", "exploder", "sucker", "sniper", "spinner", "grower", "beamer", "spawner", "ghoster", "focuser", "progenitor",
     ],
     mobTypeSpawnOrder: [], //preset list of mob names calculated at the start of a run by the randomSeed
     mobTypeSpawnIndex: 0, //increases as the mob type cycles
@@ -2938,6 +2938,25 @@ const spawn = {
             this.repulsion();
             this.harmZone();
         };
+    },
+    progenitor(x, y, radius = 25 + Math.ceil(Math.random() * 15)) {
+        mobs.spawn(x, y, 5, radius, "rgb(255,0,190)");
+        let me = mob[mob.length - 1];
+        me.accelMag = 0.001 * simulation.accelScale;
+        me.frictionStatic = 0;
+        me.friction = 0;
+        spawn.shield(me, x, y);
+        me.do = function () {
+            this.alwaysSeePlayer();
+            this.checkStatus();
+            this.attraction();
+            let distance = this.distanceToPlayer();
+            if (distance < 500 && (m.cycle % 300) === 0) {
+                spawn.randomMob(this.position.x, this.position.y, Infinity);
+                //simulation.inGameConsole("true")
+            }
+            //simulation.inGameConsole(distance);
+        }
     },
     historyBoss(x, y, radius = 30) {
         if (tech.dynamoBotCount > 0) {
