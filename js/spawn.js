@@ -2952,7 +2952,8 @@ const spawn = {
             this.attraction();
             let distance = this.distanceToPlayer();
             if (distance < 500 && (m.cycle % 300) === 0) {
-                spawn.randomMob(this.position.x, this.position.y, Infinity);
+                this.pick = spawn.fullPickList[Math.floor(Math.random() * spawn.fullPickList.length)]
+                spawn[this.pick](this.position.x, this.position.y)
                 //simulation.inGameConsole("true")
             }
             //simulation.inGameConsole(distance);

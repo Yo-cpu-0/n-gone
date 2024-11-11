@@ -7873,7 +7873,7 @@ const b = {
             name: "MRFF", // 0
             descriptionFunction() {
                 //return `spray a stream of <strong>magnetorheological ferrofluid</strong> that solidifies when <strong>right mouse</strong> is pressed <br><em><strong>Stream lengthens with more</strong> ${powerUps.orb.ammo(1)}</em>`
-                return `spray a stream of <strong>magnetorheological ferrofluid</strong> that gets longer with ${powerUps.orb.ammo(1)} <br><strong>86</strong> particles per ${powerUps.orb.ammo(1)}`
+                return `spray a stream of <strong>magnetorheological ferrofluid</strong> that drains <strong class='color-f'>energy</strong> and gets longer with ${powerUps.orb.ammo(1)} <br><strong>86</strong> particles per ${powerUps.orb.ammo(1)}`
             },
             ammo: 8000,
             ammoPack: 100,
@@ -7893,9 +7893,9 @@ const b = {
                         m.fireCDcycle = m.cycle + 120;
                         //m.energy = 0;
                     }
-                    if (m.energy > 0) {
+                    if (m.energy > DRAIN) {
                         this.canMRFire = true;
-                        this.isMROn = true;
+                        //this.isMROn = true;
                     } else {
                         this.canMRFire = false;
                     }
@@ -7912,7 +7912,7 @@ const b = {
                         isStatic: false,
                         isInHole: true,
                         minDmgSpeed: 0,
-                        dmg: m.dmgScale * 1.9,
+                        dmg: m.dmgScale * 0.3,
                         classType: "bullet",
                         isBranch: false,
                         drawRadius: 1,
