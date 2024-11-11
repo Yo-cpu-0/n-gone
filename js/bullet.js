@@ -7870,7 +7870,7 @@ const b = {
             },
         },
         {
-            name: "<strong class='ngu-experiment-text'>MRFF</strong>", // 0
+            name: "MRFF", // 0
             descriptionFunction() {
                 //return `spray a stream of <strong>magnetorheological ferrofluid</strong> that solidifies when <strong>right mouse</strong> is pressed <br><em><strong>Stream lengthens with more</strong> ${powerUps.orb.ammo(1)}</em>`
                 return `spray a stream of <strong>magnetorheological ferrofluid</strong> that gets longer with ${powerUps.orb.ammo(1)} <br><strong>86</strong> particles per ${powerUps.orb.ammo(1)}`

@@ -12032,6 +12032,27 @@ const tech = {
             tech.mobDamage = 0.5;
         }
     },
+    {
+        name: "<strong class='ngu-experiment-text'>point concentration</strong>",
+        descriptionFunction() {
+            return `improved <strong class='color-h'>health</strong>-per-<strong class='color-f'>energy</strong> ratio for energy condenser <em style="float: right;">0.0032 health per energy`
+        },
+        maxCount: 1,
+        count: 0,
+        frequency: 1,
+        requires: "energy condenser",
+        isNGUTech: true,
+        isFieldTech: true,
+        allowed() {
+            return m.fieldMode === 11
+        },
+        effect() {
+            m.healAdd = 0.0032
+        },
+        remove() {
+            m.healAdd = 0.002
+        }
+    },
     // {
     //     name: "rule 90",
     //     maxCount: 1,

@@ -3,6 +3,7 @@ let player, jumpSensor, playerBody, playerHead, headSensor;
 
 // player Object Prototype *********************************************
 const m = {
+    healAdd: 0.002,
     spawn() {
         //load player in matter.js physic engine
         // let vector = Vertices.fromPath("0 40  50 40   50 115   0 115   30 130   20 130"); //player as a series of vertices
@@ -5757,6 +5758,39 @@ const m = {
                 }
                 m.drawRegenEnergy()
                 //look for nearby mobs and fire harpoons at them
+            }
+        }
+    },
+    {
+        name: "energy condenser",
+        //<br>hold <strong class='color-block'>blocks</strong> as if they have a lower <strong>mass</strong>
+        description: `concentrate <strong class='color-f'>energy</strong> into <strong class='color-h'>health</strong><br>must be <strong>crouching</strong> to use this effect<br><strong>6</strong> <strong class='color-f'>energy</strong> per second`,
+        effect: () => {    
+            simulation.inGameConsole("true");
+            m.hold = function () {
+                let DRAIN = 0.005;
+                if (m.isHolding) {
+                    m.drawHold(m.holdingTarget);
+                    m.holding();
+                    m.throwBlock();
+                } else if ((input.field && m.fieldCDcycle < m.cycle)) { //not hold but field button is pressed
+                    if (m.energy > m.fieldRegen) m.energy -= m.fieldRegen
+                    m.grabPowerUp();
+                    m.lookForPickUp();
+                    if (m.energy > m.minEnergyToDeflect) {
+                        m.drawField();
+                        m.pushMobsFacing();
+                    }
+                    if (m.crouch && m.energy > DRAIN) {
+                        m.energy -= DRAIN;
+                        m.addHealth(m.healAdd);
+                    }
+                } else if (m.holdingTarget && m.fieldCDcycle < m.cycle) { //holding, but field button is released
+                    m.pickUp();
+                } else {
+                    m.holdingTarget = null; //clears holding target (this is so you only pick up right after the field button is released and a hold target exists)
+                }
+                m.drawRegenEnergy()
             }
         }
     },
